@@ -4,7 +4,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Calendar from '../Calendar/';
+import CalendarPanel from '../CalendarPanel/';
 import DayOverview from '../DayOverview/';
 
 export default class App extends Component {
@@ -12,12 +12,8 @@ export default class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/day-overview">
-            <DayOverview />
-          </Route>
-          <Route path="/">
-            <Calendar />
-          </Route>
+          <Route path="/day-overview" component={ DayOverview } />
+          <Route path="/" component={ CalendarPanel } />
         </Switch>
       </Router>
     );
