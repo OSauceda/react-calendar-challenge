@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Section, Form, Button } from 'react-bulma-components';
+import { connect } from 'react-redux';
+import { closeReminderModal } from '../../actions/reminderModalActions';
+import "./ReminderForm.scss";
 
 const { Field, Label, Control, Textarea, Input } = Form;
 
-export default class ReminderForm extends Component {
+class ReminderForm extends Component {
+
+  static propTypes = {
+    showReminderFormModal: PropTypes.bool.isRequired,
+    closeReminderModal: PropTypes.func.isRequired,
+  };
+
+  _closeModal = () => {
+    this.props.closeReminderModal();
+  }
+
   render() {
+    const { _closeModal } = this;
+    const { showReminderFormModal } = this.props;
+
     return(
       <div className="reminder-form">
-        <Modal show={ true }>
+        <Modal show={ showReminderFormModal } onClose={ _closeModal }>
           <Modal.Content>
-            <Section style={{ backgroundColor: 'white' }}>
+            <Section>
               <h3 className="title">Create a reminder</h3>
               <form action="/">
                 <Field>
@@ -58,10 +75,20 @@ export default class ReminderForm extends Component {
                 <hr/>
                 <Field kind="group">
                   <Control>
-                    <Button type="primary" color="primary">Save Reminder</Button>
+                    <Button
+                      type="primary"
+                      color="primary"
+                    >
+                      Save Reminder
+                    </Button>
                   </Control>
                   <Control>
-                    <Button color="link">Cancel</Button>
+                    <Button
+                      color="link"
+                      onClick={ _closeModal }
+                    >
+                      Cancel
+                    </Button>
                   </Control>
                 </Field>
               </form>
@@ -72,3 +99,12 @@ export default class ReminderForm extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  showReminderFormModal: state.showReminderFormModal,
+});
+
+export default connect(
+  mapStateToProps,
+  { closeReminderModal }
+)(ReminderForm);

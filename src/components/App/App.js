@@ -7,17 +7,21 @@ import {
 import CalendarPanel from '../CalendarPanel/';
 import DayOverview from '../DayOverview/';
 import ReminderForm from '../ReminderForm/';
+import { Provider } from 'react-redux'
+import store from '../../store';
 
 export default class App extends Component {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route path="/day-overview" component={ DayOverview } />
-          <Route path="/" component={ CalendarPanel } />
-        </Switch>
-        <ReminderForm />
-      </Router>
+      <Provider store={ store }>
+        <Router>
+          <Switch>
+            <Route path="/day-overview" component={ DayOverview } />
+            <Route path="/" component={ CalendarPanel } />
+          </Switch>
+          <ReminderForm />
+        </Router>
+      </Provider>
     );
   }
 }

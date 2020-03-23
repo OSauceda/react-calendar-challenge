@@ -1,13 +1,22 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 import { Button, Columns } from 'react-bulma-components';
+import { connect } from 'react-redux';
+import { displayReminderModal } from '../../actions/reminderModalActions';
 
 // Component Styles
 import './CalendarPanel.scss';
 
 const { Column } = Columns;
 
-export default class CalendarPanel extends Component {
+class CalendarPanel extends Component {
+
+  static propTypes = {
+    displayReminderModal: PropTypes.func.isRequired,
+    reminders: PropTypes.array,
+  };
+
   render() {
     return(
       <Fragment>
@@ -19,8 +28,10 @@ export default class CalendarPanel extends Component {
           <Column size={ 2 }>
             <Button
               color="primary"
-              className="add-reminder-btn">
-              Add a new reminder
+              className="add-reminder-btn"
+              onClick={this.props.displayReminderModal}
+            >
+              Create a new reminder
             </Button>
           </Column>
         </Columns>
@@ -28,3 +39,12 @@ export default class CalendarPanel extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  reminders: state.reminders.reminders,
+});
+
+export default connect(
+  mapStateToProps,
+  { displayReminderModal }
+)(CalendarPanel);
