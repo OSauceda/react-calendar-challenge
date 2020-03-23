@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import 'react-bulma-components/dist/react-bulma-components.min.css';
 import './index.scss';
 
 ReactDOM.render(

@@ -23,6 +23,17 @@
   }
 }
 
+.add-reminder-btn {
+  a {
+    text-transform: none;
+    color: currentColor;
+
+    &:hover {
+      color: currentColor;
+    }
+  }
+}
+
 .react-calendar__month-view__weekdays {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -114,6 +125,7 @@
   .react-calendar__navigation__arrow {
     font-size: 30px;
     font-weight: bold;
+    border-radius: 5%;
 
     &:focus {
       background: white !important;

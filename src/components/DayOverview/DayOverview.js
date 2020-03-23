@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Columns } from 'react-bulma-components';
-import 'react-bulma-components/dist/react-bulma-components.min.css';
+import { Link } from "react-router-dom";
 import "./DayOverview.scss"
 
 export default class DayOverview extends Component {
@@ -19,9 +19,11 @@ export default class DayOverview extends Component {
         <hr/>
         <Columns className="is-centered is-vcentered txt-centered">
           <Columns.Column>
+          <Link to="/">
             <Button color="link">
               Back to Calendar
             </Button>
+          </Link>
           </Columns.Column>
           <Columns.Column>
             <Button color="primary">
