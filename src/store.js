@@ -4,7 +4,7 @@ import rootReducer from './reducers';
 
 const initialState = {
   showReminderFormModal: false,
-  reminders: { increment: 0, reminders: [] },
+  reminders: { incrementId: 0, reminders: [] },
 };
 
 const middleWare = [thunk];
