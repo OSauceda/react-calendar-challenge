@@ -4,10 +4,11 @@ import { Card, Content, Columns, Button } from 'react-bulma-components';
 import tinycolor from 'tinycolor2';
 import './ReminderCard.scss';
 
-const { Header, Footer } = Card;
+const { Header } = Card;
 const { Column } = Columns;
 
 const ReminderCard = (props) => {
+
   const cardStyles = {
     background: props.reminder.color,
     color:
@@ -28,7 +29,12 @@ const ReminderCard = (props) => {
             <Column size={6}>City: {props.reminder.city.name}</Column>
           </Columns>
         </Content>
-        <Button color="light">Edit Reminder</Button>
+        <Button
+          color="light"
+          onClick={props.onEdit}
+        >
+          Edit Reminder
+        </Button>
       </Fragment>
     </Card>
   );
@@ -36,6 +42,7 @@ const ReminderCard = (props) => {
 
 ReminderCard.propTypes = {
   reminder: PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default ReminderCard;

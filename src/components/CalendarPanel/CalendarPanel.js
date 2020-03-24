@@ -73,7 +73,6 @@ class CalendarPanel extends Component {
           minDetail="month"
           onChange={
             (e) => {
-              console.log(format(e, 'MM/dd/yyyy'));
               this.props.viewDateDetails(format(e, 'MM/dd/yyyy'))
               this.props.history.push('/day-overview');
             }

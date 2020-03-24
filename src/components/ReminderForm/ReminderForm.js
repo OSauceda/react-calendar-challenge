@@ -50,6 +50,37 @@ class ReminderForm extends Component {
     this.props.getCities();
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.displayReminder.reminderId === -1 && state.reminderId !== -1) {
+      return {
+        reminderId: -1,
+        title: '',
+        selectedDate: new Date(),
+        selectedTime: new Date(),
+        selectedCity: {},
+        reminderColor: '#dedede',
+      };
+    }
+    if (props.displayReminder.reminderId !== state.reminderId) {
+      const selectedDate = new Date(props.displayReminder.date)
+      const selectedTimeArray = props.displayReminder.time.split(':');
+      const selectedTime = new Date(selectedDate.setHours(selectedTimeArray[0], selectedTimeArray[1], 0));
+
+      return {
+        reminderId: props.displayReminder.reminderId,
+        title: props.displayReminder.title,
+        selectedCity: {
+          id: props.displayReminder.city.id,
+          name: props.displayReminder.city.name,
+        },
+        selectedDate,
+        selectedTime,
+        reminderColor: props.displayReminder.color,
+      };
+    }
+    return null;
+  }
+
   _handleInputChange = (e) => {
     if (e.getMonth) {
       const currentTime = new Date(this.state.selectedTime);
@@ -182,6 +213,8 @@ class ReminderForm extends Component {
 
     const formatDate = (date, format, locale) => dateFnsFormat(date, format, { locale });
 
+    // console.log(this.state);
+
     return(
       <div className="reminder-form">
         <Modal show={ showReminderFormModal } onClose={ _closeModal }>
@@ -293,6 +326,7 @@ const mapStateToProps = (state) => ({
   showReminderFormModal: state.showReminderFormModal,
   cities: state.cities,
   reminders: state.reminders.reminders,
+  displayReminder: state.displayReminder,
 });
 
 export default connect(

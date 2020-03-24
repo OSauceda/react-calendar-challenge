@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Columns } from 'react-bulma-components';
 import { Link } from "react-router-dom";
 import { displayReminderModal } from '../../actions/reminderModalActions';
+import { getReminder } from '../../actions/displayReminderActions';
 import ReminderCard from '../ReminderCard/';
 import "./DayOverview.scss"
 
@@ -11,10 +12,11 @@ class DayOverview extends Component {
 
   static propTypes = {
     displayReminderModal: PropTypes.func.isRequired,
+    getReminder: PropTypes.func.isRequired,
   }
   componentDidMount() {
 
-    console.log(this.props);
+    // console.log(this.props);
   }
 
   _renderReminders = (reminderArray) => {
@@ -23,6 +25,10 @@ class DayOverview extends Component {
         <ReminderCard
           key={reminder.reminderId}
           reminder={reminder}
+          onEdit={() => {
+            this.props.getReminder(reminder);
+            this.props.displayReminderModal();
+          }}
         />
       );
     });
@@ -78,5 +84,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { displayReminderModal }
+  { displayReminderModal, getReminder }
 )(DayOverview);
