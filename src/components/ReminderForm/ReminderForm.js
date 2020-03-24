@@ -135,7 +135,7 @@ class ReminderForm extends Component {
       reminderId: state.reminderId,
       title: state.title,
       date: format(state.selectedDate, 'MM/dd/yyyy'),
-      time: state.selectedTime.toTimeString().slice(0,8),
+      time: state.selectedTime.toTimeString().slice(0,5),
       city: {
         id: state.selectedCity.id,
         name: state.selectedCity.name,

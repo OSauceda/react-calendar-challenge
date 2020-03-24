@@ -4,6 +4,8 @@ import Calendar from 'react-calendar';
 import { Button, Columns } from 'react-bulma-components';
 import { connect } from 'react-redux';
 import { displayReminderModal } from '../../actions/reminderModalActions';
+import { format, isSameDay } from 'date-fns';
+import tinycolor from 'tinycolor2';
 
 // Component Styles
 import './CalendarPanel.scss';
@@ -17,12 +19,65 @@ class CalendarPanel extends Component {
     reminders: PropTypes.array,
   };
 
+  _renderReminderTag = ({ date, view }) => {
+    if (view === 'month') {
+      const formattedDate = format(date, 'MM/dd/yyyy');
+      let dateReminders = this.props.reminders
+        .filter((reminder) => reminder.date === formattedDate)
+        .sort((a, b) => a.time > b.time)
+        .map((reminder) => (
+          <div
+            key={reminder.reminderId}
+            style={{
+              backgroundColor: reminder.color,
+              borderColor: reminder.color,
+              color: tinycolor(reminder.color).getBrightness() < 128 ? 'white' : 'black'
+            }}
+            className="btn btn-primary reminder-element">
+            <Columns>
+              <Column size={6}>
+                <div className="reminder-title">{reminder.title}</div>
+              </Column>
+              <Column size={6}>
+                {reminder.time}
+              </Column>
+            </Columns>
+          </div>
+        ));
+      if (dateReminders.length >= 4) {
+        let remainingLength = dateReminders.length - 3;
+        dateReminders = [
+          ...dateReminders.slice(0, 3),
+          <div key="remainder" className="btn btn-secondary reminder-element">
+            And {remainingLength} more...
+          </div>,
+        ];
+      }
+      return (
+        <Fragment>
+          {isSameDay(date, new Date()) && (
+            <div className="today" />
+          )}
+          <div className="reminder-list">{dateReminders}</div>
+        </Fragment>
+      );
+    }
+  };
+
   render() {
     return(
       <Fragment>
         <Calendar
           calendarType="US"
           minDetail="month"
+          onChange={
+            () => {
+              this.props.history.push('/day-overview');
+            }
+          }
+          tileContent={({ date, view }) =>
+            this._renderReminderTag({ date, view })
+          }
         />
         <Columns className="is-centered is-vcentered txt-centered">
           <Column size={ 2 }>

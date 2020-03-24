@@ -9,9 +9,7 @@ export default class DayOverview extends Component {
       <section className="day-overview container">
         <nav role="navigation">
           <ul className="columns is-centered is-vcentered txt-centered">
-            <li className="column">Previous Day</li>
             <li className="column">Reminders for Current Day Placeholder</li>
-            <li className="column">Next Day</li>
           </ul>
         </nav>
         <hr/>
@@ -28,11 +26,6 @@ export default class DayOverview extends Component {
           <Columns.Column>
             <Button color="primary">
               Add New Reminder
-            </Button>
-          </Columns.Column>
-          <Columns.Column>
-            <Button color="danger">
-              Delete All Reminders
             </Button>
           </Columns.Column>
         </Columns>
