@@ -4,13 +4,16 @@
     width: 75%;
     background-color: #fff;
   }
+  .rc-color-picker-wrap  {
+    .rc-color-picker-trigger {
+      padding-right: 25px;
+      padding-left: 25px;
+    }
+  }
 }
+
 .reminder-form {
   .react-time-picker__inputGroup__amPm {
     left: 2px;
-  }
-  .rc-color-picker-trigger {
-    padding-right: 25px;
-    padding-left: 25px;
   }
 }

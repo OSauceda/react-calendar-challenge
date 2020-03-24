@@ -5,35 +5,46 @@ import { Modal, Section, Form, Button } from 'react-bulma-components';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import TimePicker from 'react-time-picker';
 import ColorPicker from 'rc-color-picker';
+import Select from 'react-select-virtualized';
+import { createFilter } from 'react-select';
 import { closeReminderModal } from '../../actions/reminderModalActions';
-import { getTime } from 'date-fns';
+import { getCities } from '../../actions/citiesActions';
+import { submitReminder } from '../../actions/reminderActions';
+import { format } from 'date-fns';
 import 'react-day-picker/lib/style.css';
 import 'rc-color-picker/assets/index.css';
 import './ReminderForm.scss';
 
-const { Field, Label, Control, Textarea, Input } = Form;
+const { Field, Label, Control, Textarea } = Form;
 
 class ReminderForm extends Component {
 
   static propTypes = {
     showReminderFormModal: PropTypes.bool.isRequired,
     closeReminderModal: PropTypes.func.isRequired,
+    getCities: PropTypes.func.isRequired,
+    submitReminder: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedCity: [],
+      reminderId: -1,
+      title: '',
       selectedDate: new Date(),
       selectedTime: new Date(),
-      reminderId: -1,
       reminderColor: '#dedede',
-      title: '',
+      selectedCity: {},
       errors: {},
       showErrors: false,
       showInvalidReminder: false,
     };
+  }
+
+  componentDidMount() {
+
+    this.props.getCities();
   }
 
   _handleInputChange = (e) => {
@@ -47,11 +58,21 @@ class ReminderForm extends Component {
 
       return;
     }
+
     if (e.color) {
       this.setState({ reminderColor: e.color });
 
       return;
     }
+
+    if (e.lowercaseLabel) {
+      const selectedCity = { id: e.value, name: e.label };
+
+      this.setState({ selectedCity });
+
+      return;
+    }
+
     if (typeof e === 'string') {
       const currentDate = new Date(this.state.selectedDate);
       const selectedTimeArray = e.split(':');
@@ -65,13 +86,53 @@ class ReminderForm extends Component {
     this.setState({ [e.target.id]: e.target.value });
   }
 
+  _onSubmit = (e) => {
+    e.preventDefault();
+
+    const { state } = this;
+    const reminderData = {
+      reminderId: state.reminderId,
+      title: state.title,
+      date: format(state.selectedDate, 'MM/dd/yyyy'),
+      time: state.selectedTime.toTimeString().slice(0,8),
+      city: {
+        id: state.selectedCity.id,
+        name: state.selectedCity.name,
+      },
+      color: state.reminderColor,
+      forecast: []
+    };
+
+    this._resetForm(() => {
+      this.props.submitReminder(reminderData);
+      this.props.closeReminderModal();
+    });
+  }
+
   _closeModal = () => {
-    this.props.closeReminderModal();
+
+    this._resetForm(() => {
+      this.props.closeReminderModal();
+    });
+  }
+
+  _resetForm = (cb = () => null) => {
+    this.setState({
+      selectedCity: {},
+      selectedDate: new Date(),
+      selectedTime: new Date(),
+      reminderId: -1,
+      reminderColor: '#dedede',
+      title: '',
+    }, cb);
   }
 
   render() {
-    const { _closeModal, _handleInputChange } = this;
-    const { showReminderFormModal } = this.props;
+    const { state, _closeModal, _handleInputChange, _onSubmit } = this;
+    const { title, selectedDate, selectedTime, reminderColor, selectedCity } = state;
+    const { showReminderFormModal, cities } = this.props;
+    const lowercaseLabel = selectedCity.name ? selectedCity.name.toLowerCase() : '';
+    const selectValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
 
     return(
       <div className="reminder-form">
@@ -79,11 +140,9 @@ class ReminderForm extends Component {
           <Modal.Content>
             <Section>
               <h3 className="title">Create a reminder</h3>
-              <form action="/">
+              <form onSubmit={ _onSubmit }>
                 <Field>
-                  <Label>
-                    Title:
-                  </Label>
+                  <Label>Title:</Label>
                   <Control>
                     <Textarea
                       id="title"
@@ -92,18 +151,16 @@ class ReminderForm extends Component {
                       maxLength={ 30 }
                       required
                       onChange={ _handleInputChange }
-                      value={ this.state.title }
+                      value={ title }
                     />
                   </Control>
                 </Field>
                 <Field>
-                  <Label>
-                    Date:
-                  </Label>
+                  <Label>Date:</Label>
                   <Control>
                     <DayPickerInput
                       id="selectedDate"
-                      value={ this.state.selectedDate }
+                      value={ selectedDate }
                       dayPickerProps={{ disabledDays: { before: new Date() } }}
                       inputProps={ { readOnly: true, className: 'input' } }
                       onDayChange={ _handleInputChange }
@@ -111,36 +168,39 @@ class ReminderForm extends Component {
                   </Control>
                 </Field>
                 <Field>
-                  <Label>
-                    Time:
-                  </Label>
+                  <Label>Time:</Label>
                   <Control>
                     <TimePicker
                       disableClock
                       required
-                      value={ this.state.selectedTime }
+                      value={ selectedTime }
                       onChange={ _handleInputChange }
                       clearIcon={ null }
                     />
                   </Control>
                 </Field>
                 <Field>
-                  <Label>
-                    Select a City:
-                  </Label>
+                  <Label>Select a City:</Label>
                   <Control>
-                    <Input type="text" />
+                    <Select
+                      id="selectedCity"
+                      placeholder="Please select a city..."
+                      options={ cities }
+                      filterOption={createFilter({ ignoreAccents: false })}
+                      minimumInputSearch={ 1 }
+                      maxMenuHeight={ 150 }
+                      value={ selectValue }
+                      onChange={ _handleInputChange }
+                    />
                   </Control>
                 </Field>
                 <Field>
-                  <Label>
-                    Select a Color:
-                  </Label>
+                  <Label>Select a Color:</Label>
                   <Control>
                     <ColorPicker
                       animation="slide-up"
                       enableAlpha={ false }
-                      color={ this.state.reminderColor }
+                      color={ reminderColor }
                       onChange={ _handleInputChange }
                     />
                   </Control>
@@ -175,9 +235,10 @@ class ReminderForm extends Component {
 
 const mapStateToProps = (state) => ({
   showReminderFormModal: state.showReminderFormModal,
+  cities: state.cities,
 });
 
 export default connect(
   mapStateToProps,
-  { closeReminderModal }
+  { closeReminderModal, getCities, submitReminder }
 )(ReminderForm);

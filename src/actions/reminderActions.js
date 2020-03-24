@@ -5,7 +5,7 @@ import {
   DELETE_REMINDERS,
 } from './types';
 
-export const postReminder = (reminder) => (dispatch) => {
+export const submitReminder = (reminder) => (dispatch) => {
   if (reminder.reminderId === -1) {
     dispatch({
       type: ADD_REMINDER,

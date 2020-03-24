@@ -5,6 +5,7 @@ import rootReducer from './reducers';
 const initialState = {
   showReminderFormModal: false,
   reminders: { incrementId: 0, reminders: [] },
+  cities: [],
 };
 
 const middleWare = [thunk];
