@@ -10,6 +10,10 @@
       padding-left: 25px;
     }
   }
+  .has-error {
+    border: 1px solid #ff3860;
+    border-radius: 4px;
+  }
 }
 
 .reminder-form {

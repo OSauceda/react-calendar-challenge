@@ -11,11 +11,13 @@ import { closeReminderModal } from '../../actions/reminderModalActions';
 import { getCities } from '../../actions/citiesActions';
 import { submitReminder } from '../../actions/reminderActions';
 import { format } from 'date-fns';
+import dateFnsFormat from 'date-fns/format';
 import 'react-day-picker/lib/style.css';
 import 'rc-color-picker/assets/index.css';
 import './ReminderForm.scss';
 
-const { Field, Label, Control, Textarea } = Form;
+
+const { Field, Label, Control, Textarea, Help } = Form;
 
 class ReminderForm extends Component {
 
@@ -86,8 +88,36 @@ class ReminderForm extends Component {
     this.setState({ [e.target.id]: e.target.value });
   }
 
+  _validateForm = () => {
+    const errors = {};
+    let showErrors = false;
+    const { selectedCity, title } = this.state;
+
+    if (title.length === 0) {
+      errors.title = 'You must set a Title for this reminder.';
+      showErrors = true;
+    } else {
+      errors.title = '';
+    }
+
+    if (typeof selectedCity.id === 'undefined') {
+      errors.selectedCity = 'You must select a City.';
+      showErrors = true;
+    } else {
+      errors.selectedCity = '';
+    }
+
+    this.setState({ errors: errors, showErrors: showErrors });
+
+    return showErrors;
+  };
+
   _onSubmit = (e) => {
     e.preventDefault();
+
+    if (this._validateForm()) {
+      return;
+    }
 
     const { state } = this;
     const reminderData = {
@@ -129,10 +159,13 @@ class ReminderForm extends Component {
 
   render() {
     const { state, _closeModal, _handleInputChange, _onSubmit } = this;
-    const { title, selectedDate, selectedTime, reminderColor, selectedCity } = state;
+    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors } = state;
     const { showReminderFormModal, cities } = this.props;
     const lowercaseLabel = selectedCity.name ? selectedCity.name.toLowerCase() : '';
     const selectValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
+
+
+    const formatDate = (date, format, locale) => dateFnsFormat(date, format, { locale });
 
     return(
       <div className="reminder-form">
@@ -149,10 +182,11 @@ class ReminderForm extends Component {
                       className="has-fixed-size"
                       placeholder="Reminder title should not exceed 30 characters..."
                       maxLength={ 30 }
-                      required
                       onChange={ _handleInputChange }
                       value={ title }
+                      color={`${(errors.title) ? 'danger' : ''}`}
                     />
+                    <Help color="danger">{errors.title}</Help>
                   </Control>
                 </Field>
                 <Field>
@@ -163,6 +197,8 @@ class ReminderForm extends Component {
                       value={ selectedDate }
                       dayPickerProps={{ disabledDays: { before: new Date() } }}
                       inputProps={ { readOnly: true, className: 'input' } }
+                      formatDate={ formatDate }
+                      format="dd, MMMM ,yyyy"
                       onDayChange={ _handleInputChange }
                     />
                   </Control>
@@ -184,6 +220,7 @@ class ReminderForm extends Component {
                   <Control>
                     <Select
                       id="selectedCity"
+                      className={`${(errors.selectedCity) ? 'has-error' : ''}`}
                       placeholder="Please select a city..."
                       options={ cities }
                       filterOption={createFilter({ ignoreAccents: false })}
@@ -192,6 +229,7 @@ class ReminderForm extends Component {
                       value={ selectValue }
                       onChange={ _handleInputChange }
                     />
+                    <Help color="danger">{errors.selectedCity}</Help>
                   </Control>
                 </Field>
                 <Field>
