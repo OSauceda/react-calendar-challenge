@@ -1,19 +1,53 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Button, Columns } from 'react-bulma-components';
 import { Link } from "react-router-dom";
+import { displayReminderModal } from '../../actions/reminderModalActions';
+import ReminderCard from '../ReminderCard/';
 import "./DayOverview.scss"
 
-export default class DayOverview extends Component {
+class DayOverview extends Component {
+
+  static propTypes = {
+    displayReminderModal: PropTypes.func.isRequired,
+  }
+  componentDidMount() {
+
+    console.log(this.props);
+  }
+
+  _renderReminders = (reminderArray) => {
+    const reminders = reminderArray.map((reminder) => {
+      return (
+        <ReminderCard
+          key={reminder.reminderId}
+          reminder={reminder}
+        />
+      );
+    });
+
+    return reminders;
+  };
+
   render() {
+    const { dateDetail = "" } = this.props;
+    const fullDate = new Date(dateDetail);
+    // const formattedDate = format(fullDate, 'MM/dd/yyyy');
+    const filteredReminders = this.props.reminders
+      .filter((reminder) => reminder.date === dateDetail)
+      .sort((a, b) => a.time > b.time)
+    const reminderCards = this._renderReminders(filteredReminders);
+
     return(
       <section className="day-overview container">
         <nav role="navigation">
           <ul className="columns is-centered is-vcentered txt-centered">
-            <li className="column">Reminders for Current Day Placeholder</li>
+            <li className="column">{fullDate.toDateString()}</li>
           </ul>
         </nav>
         <hr/>
-        Reminder list will go here
+        {reminderCards}
         <hr/>
         <Columns className="is-centered is-vcentered txt-centered">
           <Columns.Column>
@@ -24,7 +58,10 @@ export default class DayOverview extends Component {
           </Link>
           </Columns.Column>
           <Columns.Column>
-            <Button color="primary">
+            <Button 
+              color="primary"
+              onClick={ this.props.displayReminderModal }
+            >
               Add New Reminder
             </Button>
           </Columns.Column>
@@ -33,3 +70,13 @@ export default class DayOverview extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  dateDetail: state.dateDetail,
+  reminders: state.reminders.reminders
+});
+
+export default connect(
+  mapStateToProps,
+  { displayReminderModal }
+)(DayOverview);

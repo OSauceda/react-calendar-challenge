@@ -4,6 +4,7 @@ import Calendar from 'react-calendar';
 import { Button, Columns } from 'react-bulma-components';
 import { connect } from 'react-redux';
 import { displayReminderModal } from '../../actions/reminderModalActions';
+import { viewDateDetails } from '../../actions/dateDetailActions';
 import { format, isSameDay } from 'date-fns';
 import tinycolor from 'tinycolor2';
 
@@ -31,7 +32,7 @@ class CalendarPanel extends Component {
             style={{
               backgroundColor: reminder.color,
               borderColor: reminder.color,
-              color: tinycolor(reminder.color).getBrightness() < 128 ? 'white' : 'black'
+              color: tinycolor(reminder.color).getBrightness() < 128 ? '#fff' : '#000'
             }}
             className="btn btn-primary reminder-element">
             <Columns>
@@ -49,7 +50,7 @@ class CalendarPanel extends Component {
         dateReminders = [
           ...dateReminders.slice(0, 3),
           <div key="remainder" className="btn btn-secondary reminder-element">
-            And {remainingLength} more...
+            And {remainingLength} more reminders...
           </div>,
         ];
       }
@@ -71,7 +72,9 @@ class CalendarPanel extends Component {
           calendarType="US"
           minDetail="month"
           onChange={
-            () => {
+            (e) => {
+              console.log(format(e, 'MM/dd/yyyy'));
+              this.props.viewDateDetails(format(e, 'MM/dd/yyyy'))
               this.props.history.push('/day-overview');
             }
           }
@@ -101,5 +104,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { displayReminderModal }
+  { displayReminderModal, viewDateDetails }
 )(CalendarPanel);

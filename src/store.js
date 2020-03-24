@@ -6,6 +6,7 @@ const initialState = {
   showReminderFormModal: false,
   reminders: { incrementId: 0, reminders: [] },
   cities: [],
+  dateDetail: '',
 };
 
 const middleWare = [thunk];
