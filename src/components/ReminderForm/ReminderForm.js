@@ -26,6 +26,7 @@ class ReminderForm extends Component {
     closeReminderModal: PropTypes.func.isRequired,
     getCities: PropTypes.func.isRequired,
     submitReminder: PropTypes.func.isRequired,
+    reminders: PropTypes.array,
   };
 
   constructor(props) {
@@ -40,7 +41,7 @@ class ReminderForm extends Component {
       selectedCity: {},
       errors: {},
       showErrors: false,
-      showInvalidReminder: false,
+      invalidReminder: false,
     };
   }
 
@@ -112,6 +113,16 @@ class ReminderForm extends Component {
     return showErrors;
   };
 
+  _validateReminder = (reminderData) => {
+    const invalidReminder = this.props.reminders.some(
+      (rem) => rem.date === reminderData.date && rem.time === reminderData.time
+    );
+
+    this.setState({ invalidReminder });
+
+    return invalidReminder;
+  };
+
   _onSubmit = (e) => {
     e.preventDefault();
 
@@ -132,6 +143,10 @@ class ReminderForm extends Component {
       color: state.reminderColor,
       forecast: []
     };
+
+    if (reminderData.reminderId === -1 && this._validateReminder(reminderData)) {
+      return;
+    }
 
     this._resetForm(() => {
       this.props.submitReminder(reminderData);
@@ -159,7 +174,7 @@ class ReminderForm extends Component {
 
   render() {
     const { state, _closeModal, _handleInputChange, _onSubmit } = this;
-    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors } = state;
+    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors, invalidReminder } = state;
     const { showReminderFormModal, cities } = this.props;
     const lowercaseLabel = selectedCity.name ? selectedCity.name.toLowerCase() : '';
     const selectValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
@@ -184,7 +199,7 @@ class ReminderForm extends Component {
                       maxLength={ 30 }
                       onChange={ _handleInputChange }
                       value={ title }
-                      color={`${(errors.title) ? 'danger' : ''}`}
+                      color={`${(errors.title) ? 'danger' : 'info'}`}
                     />
                     <Help color="danger">{errors.title}</Help>
                   </Control>
@@ -244,6 +259,9 @@ class ReminderForm extends Component {
                   </Control>
                 </Field>
                 <hr/>
+                {
+                  invalidReminder && <Help color="danger">You already have a reminder with this time and date!</Help>
+                }
                 <Field kind="group">
                   <Control>
                     <Button
@@ -274,6 +292,7 @@ class ReminderForm extends Component {
 const mapStateToProps = (state) => ({
   showReminderFormModal: state.showReminderFormModal,
   cities: state.cities,
+  reminders: state.reminders.reminders,
 });
 
 export default connect(
