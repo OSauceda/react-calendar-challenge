@@ -66,6 +66,8 @@ class CalendarPanel extends Component {
   };
 
   render() {
+    const { _renderReminderTag, props } = this;
+    const { viewDateDetails, displayReminderModal, history } = props;
 
     return(
       <Fragment>
@@ -74,12 +76,12 @@ class CalendarPanel extends Component {
           minDetail="month"
           onChange={
             (e) => {
-              this.props.viewDateDetails(format(e, 'MM/dd/yyyy'))
-              this.props.history.push('/day-overview');
+              viewDateDetails(format(e, 'MM/dd/yyyy'))
+              history.push('/day-overview');
             }
           }
           tileContent={({ date, view }) =>
-            this._renderReminderTag({ date, view })
+            _renderReminderTag({ date, view })
           }
         />
         <Columns className="is-centered is-vcentered txt-centered">
@@ -87,7 +89,7 @@ class CalendarPanel extends Component {
             <Button
               color="primary"
               className="add-reminder-btn"
-              onClick={this.props.displayReminderModal}
+              onClick={ displayReminderModal }
             >
               Create a new reminder
             </Button>

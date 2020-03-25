@@ -33,7 +33,7 @@ class DayOverview extends Component {
   };
 
   render() {
-    const { dateDetail = "" } = this.props;
+    const { dateDetail = "", displayReminderModal } = this.props;
     const fullDate = new Date(dateDetail);
     const filteredReminders = this.props.reminders
       .filter((reminder) => reminder.date === dateDetail)
@@ -61,7 +61,7 @@ class DayOverview extends Component {
           <Columns.Column>
             <Button
               color="primary"
-              onClick={ this.props.displayReminderModal }
+              onClick={ displayReminderModal }
             >
               Add New Reminder
             </Button>

@@ -7,7 +7,7 @@ Calendar application that allows you to create reminders.
 * [React](https://github.com/facebook/react) to build the entire UI.
 * [React Router](https://github.com/ReactTraining/react-router) for simple app routing.
 * State management implementation was done with [Redux](https://github.com/reduxjs/redux) and [React Redux](https://github.com/reduxjs/react-redux).
-* Calendar logic was done by implementing and altering the rendering of [React-Calendar](https://github.com/wojtekmaj/react-calendar#readme).
+* Calendar logic was done by implementing [React-Calendar](https://github.com/wojtekmaj/react-calendar#readme).
 * Component styling and structuring was done with the help of [react-bulma-components](https://github.com/couds/react-bulma-components#readme).
 * Unit Testing is being done with [Jest](https://github.com/facebook/jest) and [Enzyme](https://github.com/airbnb/enzyme).
 * [rc-color-picker](https://github.com/react-component/color-picker#readme) for the color picker.
@@ -40,7 +40,7 @@ The user has the option to input a title, pick a date, time, city and a color fo
 
 Next is the Day Overview Panel. Reminders are shown alongside a quick overview of weather forecast for the set day.<br />
 <br />
-Reminders can be added and edited,.
+Reminders can be added and edited.
 
 <br />
 
@@ -53,3 +53,5 @@ The image below shows the Reminder form modal in its editable reminder mode, val
 <br />
 
 <img src="https://i.ibb.co/HthRk7b/react-calendar-challenge-reminder-form-edit.png" alt="Reminder Form edit mode">
+
+<br />
