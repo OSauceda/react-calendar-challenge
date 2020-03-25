@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const initialState = {
-  showReminderFormModal: false,
+  showReminderFormModal: true,
   reminders: { incrementId: 0, reminders: [] },
   cities: [],
   dateDetail: '',

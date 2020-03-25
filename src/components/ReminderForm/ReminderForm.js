@@ -40,9 +40,9 @@ class ReminderForm extends Component {
       selectedTime: new Date(),
       reminderColor: '#dedede',
       selectedCity: {},
+      invalidReminder: false,
       errors: {},
       showErrors: false,
-      invalidReminder: false,
     };
   }
 
@@ -227,7 +227,7 @@ class ReminderForm extends Component {
                     <Textarea
                       id="title"
                       className="has-fixed-size"
-                      placeholder="Reminder title should not exceed 30 characters..."
+                      placeholder="Title should not exceed 30 characters..."
                       maxLength={ 30 }
                       onChange={ _handleInputChange }
                       value={ title }
@@ -274,6 +274,7 @@ class ReminderForm extends Component {
                       minimumInputSearch={ 1 }
                       maxMenuHeight={ 150 }
                       value={ cityValue }
+                      isClearable={false}
                       onChange={ _handleInputChange }
                     />
                     <Help color="danger">{errors.selectedCity}</Help>
@@ -299,6 +300,7 @@ class ReminderForm extends Component {
                     <Button
                       type="primary"
                       color="primary"
+                      className="submit"
                     >
                       Save Reminder
                     </Button>
