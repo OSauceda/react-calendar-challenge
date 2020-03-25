@@ -15,7 +15,7 @@ Calendar application that allows you to create reminders.
 * [React-Time-Picker](https://github.com/wojtekmaj/react-time-picker#readme) for the  time picker.
 * [react-select-virtualized](https://github.com/guiyep/react-select-virtualized#readme) for the city autosuggest.
 
-# Run the application on your browser.
+# Run the application in your browser.
 
 ### Prerequisites
 Before proceding to run the app on your computer please make sure you have the following:
