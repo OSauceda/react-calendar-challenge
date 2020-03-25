@@ -25,12 +25,16 @@ Runs all tests.<br />
 
 ### App Layout
 
-The following image shows the app main view, the Calendar Panel, in this view the user can add new reminders, the user can see a quick preview of the reminders created for each day.<br />
+The following image shows the app main view, the Calendar Panel, in this view the user can add new reminders, the user can see a quick preview of the reminders created for each day.
+
+<br />
 
 <img src="https://i.ibb.co/4YSnDTy/react-calendar-challenge-calendar-panel.png" alt="Calendar Panel">
 
 The following image shows the reminder form modal, this component is used to either create or edit a reminder, the image shows the component in its creation mode. <br />
-The user has the option to input a title, pick a date, time, city and a color for the reminder. Title and City are required fields, all other fields are not required since default values are provided.  <br />
+The user has the option to input a title, pick a date, time, city and a color for the reminder. Title and City are required fields, all other fields are not required since default values are provided.
+
+<br />
 
 <img src="https://i.ibb.co/YppzwqK/react-calendar-challenge-reminder-form-creation.png" alt="Reminder Form creation mode">
 
@@ -38,9 +42,14 @@ Next is the Day Overview Panel. Reminders are shown alongside a quick overview o
 <br />
 Reminders can be added and edited,.
 
+<br />
+
 <img src="https://i.ibb.co/5Y5DFzT/react-calendar-challenge-day-overview-panel.png" alt="Day Overview Panel">
+
 <br />
 
 The image below shows the Reminder form modal in its editable reminder mode, validations for this mode are the same as the creation mode.
+
+<br />
 
 <img src="https://i.ibb.co/HthRk7b/react-calendar-challenge-reminder-form-edit.png" alt="Reminder Form edit mode">
