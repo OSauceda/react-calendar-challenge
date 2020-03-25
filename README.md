@@ -17,6 +17,11 @@ Calendar application that allows you to create reminders.
 
 # Run the application on your browser.
 
+### Prerequisites
+Before proceding to run the app on your computer please make sure you have the following:
+- Node.js - [Downloadn Node.js](https://nodejs.org/en/download/).
+- Yarn - [Download Yarn](https://yarnpkg.com/en/docs/install#windows-stable).
+
 ### `yarn start`
 This command should open [http://localhost:3000](http://localhost:3000) in a new browser tab.
 
