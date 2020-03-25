@@ -14,10 +14,6 @@ class DayOverview extends Component {
     displayReminderModal: PropTypes.func.isRequired,
     getReminder: PropTypes.func.isRequired,
   }
-  componentDidMount() {
-
-    // console.log(this.props);
-  }
 
   _renderReminders = (reminderArray) => {
     const reminders = reminderArray.map((reminder) => {
@@ -39,7 +35,6 @@ class DayOverview extends Component {
   render() {
     const { dateDetail = "" } = this.props;
     const fullDate = new Date(dateDetail);
-    // const formattedDate = format(fullDate, 'MM/dd/yyyy');
     const filteredReminders = this.props.reminders
       .filter((reminder) => reminder.date === dateDetail)
       .sort((a, b) => a.time > b.time)
@@ -64,7 +59,7 @@ class DayOverview extends Component {
           </Link>
           </Columns.Column>
           <Columns.Column>
-            <Button 
+            <Button
               color="primary"
               onClick={ this.props.displayReminderModal }
             >

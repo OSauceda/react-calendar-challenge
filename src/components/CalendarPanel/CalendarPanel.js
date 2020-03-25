@@ -50,7 +50,7 @@ class CalendarPanel extends Component {
         dateReminders = [
           ...dateReminders.slice(0, 3),
           <div key="remainder" className="btn btn-secondary reminder-element">
-            And {remainingLength} more reminders...
+            And {remainingLength} more {`${remainingLength.length > 1 ? 'reminders' : 'reminder'}`}...
           </div>,
         ];
       }
@@ -66,6 +66,7 @@ class CalendarPanel extends Component {
   };
 
   render() {
+
     return(
       <Fragment>
         <Calendar

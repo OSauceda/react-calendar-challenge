@@ -9,9 +9,11 @@
     width: 100%;
     height: 17px;
     font-size: 12px;
+    border-radius: 30px;
     overflow: hidden;
 
     .reminder-title {
+      font-weight: bold;
       text-align: center;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -170,7 +172,7 @@
     }
 
     &.react-calendar__month-view__days__day--weekend {
-      color: #ca2645;
+      color: #0087ffa6;
       background: rgb(240, 240, 240);
 
       &:hover {

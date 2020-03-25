@@ -9,7 +9,7 @@ import Select from 'react-select-virtualized';
 import { createFilter } from 'react-select';
 import { closeReminderModal } from '../../actions/reminderModalActions';
 import { getCities } from '../../actions/citiesActions';
-import { submitReminder } from '../../actions/reminderActions';
+import { submitReminder, fetchWeather } from '../../actions/reminderActions';
 import { format } from 'date-fns';
 import dateFnsFormat from 'date-fns/format';
 import 'react-day-picker/lib/style.css';
@@ -27,6 +27,7 @@ class ReminderForm extends Component {
     getCities: PropTypes.func.isRequired,
     submitReminder: PropTypes.func.isRequired,
     reminders: PropTypes.array,
+    fetchWeather: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -181,6 +182,7 @@ class ReminderForm extends Component {
 
     this._resetForm(() => {
       this.props.submitReminder(reminderData);
+      this.props.fetchWeather(reminderData.city.id);
       this.props.closeReminderModal();
     });
   }
@@ -205,22 +207,19 @@ class ReminderForm extends Component {
 
   render() {
     const { state, _closeModal, _handleInputChange, _onSubmit } = this;
-    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors, invalidReminder } = state;
+    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors, invalidReminder, reminderId } = state;
     const { showReminderFormModal, cities } = this.props;
     const lowercaseLabel = selectedCity.name ? selectedCity.name.toLowerCase() : '';
-    const selectValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
-
+    const cityValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
 
     const formatDate = (date, format, locale) => dateFnsFormat(date, format, { locale });
 
-    // console.log(this.state);
-
     return(
       <div className="reminder-form">
-        <Modal show={ showReminderFormModal } onClose={ _closeModal }>
+        <Modal show={ showReminderFormModal } modal={{ closeOnEsc: false }} onClose={ _closeModal }>
           <Modal.Content>
             <Section>
-              <h3 className="title">Create a reminder</h3>
+              <h3 className="title">{ (reminderId === -1) ? 'Create Reminder' : 'Edit Reminder' }</h3>
               <form onSubmit={ _onSubmit }>
                 <Field>
                   <Label>Title:</Label>
@@ -274,7 +273,7 @@ class ReminderForm extends Component {
                       filterOption={createFilter({ ignoreAccents: false })}
                       minimumInputSearch={ 1 }
                       maxMenuHeight={ 150 }
-                      value={ selectValue }
+                      value={ cityValue }
                       onChange={ _handleInputChange }
                     />
                     <Help color="danger">{errors.selectedCity}</Help>
@@ -331,5 +330,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { closeReminderModal, getCities, submitReminder }
+  { closeReminderModal, getCities, submitReminder, fetchWeather }
 )(ReminderForm);
