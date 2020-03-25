@@ -37,27 +37,4 @@ describe('<ReminderForm />', () => {
   it('renders the ReminderForm', () => {
     expect(wrapper).toBeDefined();
   });
-
-  // it('calls fetchCities on mount', () => {
-  //   expect(getCitiesMock.mock.calls.length).toBeGreaterThan(0);
-  // });
-
-  // it('adds validation errors on form submit without required fields', () => {
-  //   const submitButton = wrapper.find('.reminder-submit').at(0);
-
-  //   submitButton.simulate('click');
-  //   expect(wrapper.state('showErrors')).toEqual(true);
-  // });
-
-  // it('adds validation error for title on form submit without title', () => {
-  //   const submitButton = wrapper.find('#reminder-submit').at(0);
-  //   submitButton.simulate('click');
-  //   expect(wrapper.state('errors')).toHaveProperty('title');
-  // });
-
-  // it('adds validation error for selectedCity on form submit without selectedCity', () => {
-  //   const submitButton = wrapper.find('#reminder-submit').at(0);
-  //   submitButton.simulate('click');
-  //   expect(wrapper.state('errors')).toHaveProperty('selectedCity');
-  // });
 });
