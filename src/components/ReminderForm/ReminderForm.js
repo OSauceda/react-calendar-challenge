@@ -10,6 +10,7 @@ import { createFilter } from 'react-select';
 import { closeReminderModal } from '../../actions/reminderModalActions';
 import { getCities } from '../../actions/citiesActions';
 import { submitReminder, fetchWeather } from '../../actions/reminderActions';
+import { getReminder } from '../../actions/displayReminderActions';
 import { format } from 'date-fns';
 import dateFnsFormat from 'date-fns/format';
 import 'react-day-picker/lib/style.css';
@@ -28,6 +29,7 @@ class ReminderForm extends Component {
     submitReminder: PropTypes.func.isRequired,
     reminders: PropTypes.array,
     fetchWeather: PropTypes.func.isRequired,
+    getReminder: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -184,6 +186,8 @@ class ReminderForm extends Component {
       this.props.submitReminder(reminderData);
       this.props.fetchWeather(reminderData.city.id);
       this.props.closeReminderModal();
+      // set displayReminderId to default
+      this.props.getReminder({ reminderId: -1 })
     });
   }
 
@@ -191,6 +195,8 @@ class ReminderForm extends Component {
 
     this._resetForm(() => {
       this.props.closeReminderModal();
+      // set displayReminderId to default
+      this.props.getReminder({ reminderId: -1 })
     });
   }
 
@@ -332,5 +338,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { closeReminderModal, getCities, submitReminder, fetchWeather }
+  { closeReminderModal, getCities, submitReminder, fetchWeather, getReminder }
 )(ReminderForm);
