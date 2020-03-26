@@ -7,6 +7,7 @@ import {
 import CalendarPanel from '../CalendarPanel/';
 import DayOverview from '../DayOverview/';
 import ReminderForm from '../ReminderForm/';
+import Calendar from '../Calendar/';
 import { Provider } from 'react-redux'
 import store from '../../store';
 
@@ -17,6 +18,7 @@ export default class App extends Component {
         <Router>
           <Switch>
             <Route path="/day-overview" component={ DayOverview } />
+            <Route path="/calendar" component={ Calendar } />
             <Route path="/" component={ CalendarPanel } />
           </Switch>
           <ReminderForm />

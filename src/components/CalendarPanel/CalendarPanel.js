@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Calendar from 'react-calendar';
+import Calendar from '../Calendar';
 import { Button, Columns } from 'react-bulma-components';
 import { connect } from 'react-redux';
 import { displayReminderModal } from '../../actions/reminderModalActions';
@@ -20,49 +20,44 @@ class CalendarPanel extends Component {
     reminders: PropTypes.array,
   };
 
-  _renderReminderTag = ({ date, view }) => {
-    if (view === 'month') {
-      const formattedDate = format(date, 'MM/dd/yyyy');
-      let dateReminders = this.props.reminders
-        .filter((reminder) => reminder.date === formattedDate)
-        .sort((a, b) => a.time > b.time)
-        .map((reminder) => (
-          <div
-            key={reminder.reminderId}
-            style={{
-              backgroundColor: reminder.color,
-              borderColor: reminder.color,
-              color: tinycolor(reminder.color).getBrightness() < 128 ? '#fff' : '#000'
-            }}
-            className="btn btn-primary reminder-element">
-            <Columns>
-              <Column size={6}>
-                <div className="reminder-title">{reminder.title}</div>
-              </Column>
-              <Column size={6}>
-                {reminder.time}
-              </Column>
-            </Columns>
-          </div>
-        ));
-      if (dateReminders.length >= 4) {
-        let remainingLength = dateReminders.length - 3;
-        dateReminders = [
-          ...dateReminders.slice(0, 3),
-          <div key="remainder" className="btn btn-secondary reminder-element">
-            And {remainingLength} more {`${remainingLength.length > 1 ? 'reminders' : 'reminder'}`}...
-          </div>,
-        ];
-      }
-      return (
-        <Fragment>
-          {isSameDay(date, new Date()) && (
-            <div className="today" />
-          )}
-          <div className="reminder-list">{dateReminders}</div>
-        </Fragment>
-      );
+  _renderReminderTag = (date) => {
+    const formattedDate = format(date, 'MM/dd/yyyy');
+    let dateReminders = this.props.reminders
+      .filter((reminder) => reminder.date === formattedDate)
+      .sort((a, b) => a.time > b.time)
+      .map((reminder) => (
+        <div
+          key={reminder.reminderId}
+          style={{
+            backgroundColor: reminder.color,
+            borderColor: reminder.color,
+            color: tinycolor(reminder.color).getBrightness() < 128 ? '#fff' : '#000'
+          }}
+          className="btn btn-primary reminder-element">
+          <Columns>
+            <Column size={6}>
+              <div className="reminder-title">{reminder.title}</div>
+            </Column>
+            <Column size={6}>
+              {reminder.time}
+            </Column>
+          </Columns>
+        </div>
+      ));
+    if (dateReminders.length >= 4) {
+      let remainingLength = dateReminders.length - 3;
+      dateReminders = [
+        ...dateReminders.slice(0, 3),
+        <div key="remainder" className="btn btn-secondary reminder-element">
+          And {remainingLength} more {`${remainingLength.length > 1 ? 'reminders' : 'reminder'}`}...
+        </div>,
+      ];
     }
+    return (
+      <Fragment>
+        <div key="reminder-list" className="reminder-list">{dateReminders}</div>
+      </Fragment>
+    );
   };
 
   render() {
@@ -80,8 +75,8 @@ class CalendarPanel extends Component {
               history.push('/day-overview');
             }
           }
-          tileContent={({ date, view }) =>
-            _renderReminderTag({ date, view })
+          customTileContent={(date) =>
+            _renderReminderTag(date)
           }
         />
         <Columns className="is-centered is-vcentered txt-centered">
