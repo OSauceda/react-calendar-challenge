@@ -5,8 +5,12 @@ import { Button, Columns } from 'react-bulma-components';
 import { Link } from "react-router-dom";
 import { displayReminderModal } from '../../actions/reminderModalActions';
 import { getReminder } from '../../actions/displayReminderActions';
+import { deleteReminder, deleteReminders } from '../../actions/reminderActions';
 import ReminderCard from '../ReminderCard/';
+import ConfirmModal from './ConfirmModal';
 import "./DayOverview.scss"
+
+const { Column } = Columns;
 
 class DayOverview extends Component {
 
@@ -15,12 +19,23 @@ class DayOverview extends Component {
     getReminder: PropTypes.func.isRequired,
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showConfirmModal: false,
+      isClearDay: false,
+      deleteReminderId: -1,
+    };
+  }
+
   _renderReminders = (reminderArray) => {
     const reminders = reminderArray.map((reminder) => {
       return (
         <ReminderCard
           key={reminder.reminderId}
           reminder={reminder}
+          confirmModalHandler={ this._confirmModalHandler }
           onEdit={() => {
             this.props.getReminder(reminder);
             this.props.displayReminderModal();
@@ -32,13 +47,28 @@ class DayOverview extends Component {
     return reminders;
   };
 
+
+  _confirmModalHandler = (showConfirmModal = true, isClearDay = true, deleteReminderId = -1) => () =>{
+    this.setState({
+      showConfirmModal,
+      isClearDay,
+      deleteReminderId,
+    });
+  }
+
+
   render() {
-    const { dateDetail = "", displayReminderModal } = this.props;
+    const {
+      _renderReminders,
+      _confirmModalHandler,
+    } = this;
+    const { showConfirmModal, isClearDay, deleteReminderId } = this.state;
+    const { dateDetail = "", displayReminderModal, deleteReminder, deleteReminders } = this.props;
     const fullDate = new Date(dateDetail);
     const filteredReminders = this.props.reminders
       .filter((reminder) => reminder.date === dateDetail)
       .sort((a, b) => a.time > b.time)
-    const reminderCards = this._renderReminders(filteredReminders);
+    const reminderCards = _renderReminders(filteredReminders);
 
     return(
       <section className="day-overview container">
@@ -48,25 +78,44 @@ class DayOverview extends Component {
           </ul>
         </nav>
         <hr/>
-        {reminderCards}
+        { reminderCards }
         <hr/>
         <Columns className="is-centered is-vcentered txt-centered">
-          <Columns.Column>
-          <Link to="/">
-            <Button color="link">
-              Back to Calendar
-            </Button>
-          </Link>
-          </Columns.Column>
-          <Columns.Column>
+          <Column>
+            <Link to="/">
+              <Button color="link">
+                Back to Calendar
+              </Button>
+            </Link>
+          </Column>
+          <Column>
             <Button
               color="primary"
               onClick={ displayReminderModal }
             >
               Add New Reminder
             </Button>
-          </Columns.Column>
+          </Column>
+          <Column>
+            {
+              filteredReminders.length > 0 && <Button
+                color="danger"
+                onClick={ _confirmModalHandler(true, true) }
+              >
+                Clear all Reminders
+              </Button>
+            }
+          </Column>
         </Columns>
+        <ConfirmModal
+          showConfirmation={ showConfirmModal }
+          isClearDay={ isClearDay }
+          closeModal={ _confirmModalHandler(false, false) }
+          onDeleteReminder={ deleteReminder }
+          onClearDay={ deleteReminders }
+          currentSelectedDate={ dateDetail }
+          deleteReminderId= { deleteReminderId }
+        />
       </section>
     );
   }
@@ -79,5 +128,10 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { displayReminderModal, getReminder }
+  {
+    displayReminderModal,
+    getReminder,
+    deleteReminder,
+    deleteReminders
+  }
 )(DayOverview);

@@ -5,7 +5,7 @@ import { Button, Columns } from 'react-bulma-components';
 import { connect } from 'react-redux';
 import { displayReminderModal } from '../../actions/reminderModalActions';
 import { viewDateDetails } from '../../actions/dateDetailActions';
-import { format, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 import tinycolor from 'tinycolor2';
 
 // Component Styles

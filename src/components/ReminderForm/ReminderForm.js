@@ -212,8 +212,22 @@ class ReminderForm extends Component {
   }
 
   render() {
-    const { state, _closeModal, _handleInputChange, _onSubmit } = this;
-    const { title, selectedDate, selectedTime, reminderColor, selectedCity, errors, invalidReminder, reminderId } = state;
+    const {
+      state,
+      _closeModal,
+      _handleInputChange,
+      _onSubmit,
+    } = this;
+    const {
+      title,
+      selectedDate,
+      selectedTime,
+      reminderColor,
+      selectedCity,
+      errors,
+      invalidReminder,
+      reminderId,
+    } = state;
     const { showReminderFormModal, cities } = this.props;
     const lowercaseLabel = selectedCity.name ? selectedCity.name.toLowerCase() : '';
     const cityValue = { label: selectedCity.name || '', value: selectedCity.id || '', lowercaseLabel };
@@ -222,7 +236,11 @@ class ReminderForm extends Component {
 
     return(
       <div className="reminder-form">
-        <Modal show={ showReminderFormModal } modal={{ closeOnEsc: false }} onClose={ _closeModal }>
+        <Modal
+          show={ showReminderFormModal }
+          modal={{ closeOnEsc: false }}
+          onClose={ _closeModal }
+        >
           <Modal.Content>
             <Section>
               <h3 className="title">{ (reminderId === -1) ? 'Create Reminder' : 'Edit Reminder' }</h3>
@@ -338,5 +356,11 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { closeReminderModal, getCities, submitReminder, fetchWeather, getReminder }
+  {
+    closeReminderModal,
+    getCities,
+    submitReminder,
+    fetchWeather,
+    getReminder
+  }
 )(ReminderForm);

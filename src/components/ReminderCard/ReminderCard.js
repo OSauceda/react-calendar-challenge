@@ -59,12 +59,24 @@ const ReminderCard = (props) => {
             </Column>
           </Columns>
         </Content>
-        <Button
-          color="light"
-          onClick={props.onEdit}
-        >
-          Edit Reminder
-        </Button>
+        <Columns className="is-centered is-vcentered">
+          <Column size={4}>
+            <Button
+              color="light"
+              onClick={props.onEdit}
+            >
+              Edit Reminder
+            </Button>
+          </Column>
+          <Column size={4}>
+            <Button
+              color="light"
+              onClick={ props.confirmModalHandler(true, false, props.reminder.reminderId) }
+            >
+              Delete Reminder
+            </Button>
+          </Column>
+        </Columns>
       </Fragment>
     </Card>
   );
@@ -73,6 +85,7 @@ const ReminderCard = (props) => {
 ReminderCard.propTypes = {
   reminder: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
+  confirmModalHandler: PropTypes.func.isRequired,
 };
 
 export default ReminderCard;

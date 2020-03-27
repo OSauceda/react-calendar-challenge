@@ -9,6 +9,7 @@ import {
 const initialState = { incrementId: 0, reminders: [] };
 
 export default (state = initialState, action) => {
+
   switch (action.type) {
     case ADD_REMINDER:
       const newReminder = { ...action.payload, reminderId: state.incrementId };
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
         return reminder;
       });
       return {
-        increment: state.increment,
+        incrementId: state.incrementId,
         reminders: [...remindersWithWeatherData],
       };
     default:
