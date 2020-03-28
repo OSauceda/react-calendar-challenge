@@ -43,7 +43,7 @@ export default class Calendar extends Component {
     const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
-    const startDayMonth = startOfMonth(date).getDate();
+    const startDayMonth = startOfMonth(date).getDay();
 
     this.setState({
       date,
