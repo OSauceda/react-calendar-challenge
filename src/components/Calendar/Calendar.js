@@ -35,7 +35,7 @@ export default class Calendar extends Component {
       day: today.getDate(),
       month: today.getMonth(),
       year: today.getFullYear(),
-      startDayMonth: startOfMonth(today).getDate()
+      startDayMonth: startOfMonth(today).getDay()
     };
   }
 
@@ -67,7 +67,7 @@ export default class Calendar extends Component {
             className="btn btn-previous"
             onClick={ _changeMonthHandler(new Date(year, month - 1, day)) }
           >
-            previous
+            previous month
           </button>
           <h3>
             <strong>{months[month]} {year}</strong>
@@ -76,7 +76,7 @@ export default class Calendar extends Component {
             className="btn btn-next"
             onClick={ _changeMonthHandler(new Date(year, month + 1, day)) }
           >
-            next
+            next month
           </button>
         </div>
         <div className="calendar-tile-container">
@@ -89,6 +89,8 @@ export default class Calendar extends Component {
               .fill(null)
               .map((_, index) => {
                 const day = index - (startDayMonth - 2);
+
+                console.log(day);
 
                 return (
                   <div
